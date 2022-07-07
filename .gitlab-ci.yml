@@ -5,8 +5,7 @@ stages:
   - Staging Apply
   - Production Plan
   - Production Apply
-  - Staging Destroy
-  - Production Destroy
+  - Destroy
 
 Test and Lint:
   stage: Test and Lint
