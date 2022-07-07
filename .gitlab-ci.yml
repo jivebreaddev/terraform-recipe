@@ -8,7 +8,7 @@ stages:
   - Destory
 
 Test and Lint:
-  stages: Test and Lint
+  stage: Test and Lint
   script:
     - echo "Test and Lint"
   rules:
