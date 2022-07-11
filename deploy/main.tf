@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "recipe-app-api-devops-tfstate"
+    bucket         = "recipe-app-api-devops-tfstate-jive"
     key            = "recipe-app.tfstate"
     region         = "us-east-1"
     encrypt        = true
