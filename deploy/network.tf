@@ -73,9 +73,11 @@ resource "aws_nat_gateway" "public_a" {
 }
 
 resource "aws_subnet" "public_b" {
-
+  cidr_block              = "10.1.2.0/24"
+  map_public_ip_on_launch = true
   vpc_id                  = aws_vpc.main.id
- 
+  availability_zone       = "${data.aws_region.current_name}b"
+
   tags = merge(
     local.common_tags,
     map("Name", "${local.prefix}-public-b")
