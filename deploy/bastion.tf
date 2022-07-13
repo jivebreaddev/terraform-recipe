@@ -9,7 +9,7 @@ data "aws_ami" "amazon_linux" {
 
 resource "aws_iam_role" "bastion" {
   name               = "{${local.prefix}-bastion"
-  assume_role_policy = file("./templates/bastion/instsance_profile-policy.json")
+  assume_role_policy = file("./templates/bastion/instance-profile-policy.json")
   tags               = local.common_tags
 
 }
@@ -24,12 +24,11 @@ resource "aws_iam_instance_profile" "bastion" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                      = data.aws_ami.amazon_linux.id
-  instance_type            = "t2.micro"
-  user_data                = file("./templates/bastion/user-data.sh")
-  aws_iam_instance_profile = aws_iam_instance_profile.bastion.name
-  key_name                 = var.bastion_key_name
-  subnet_id                = aws_subnet.public_a.id
+  ami           = data.aws_ami.amazon_linux.id
+  instance_type = "t2.micro"
+  user_data     = file("./templates/bastion/user-data.sh")
+  key_name      = var.bastion_key_name
+  subnet_id     = aws_subnet.public_a.id
 
   vpc_security_group_ids = [
     aws_security_group.bastion.id
@@ -37,7 +36,7 @@ resource "aws_instance" "bastion" {
 
   tags = merge(
     local.common_tags,
-    map("Name", "${local.prefix}-bastion")
+    tomap({ "Name" : "${local.prefix}-bastion" })
   )
 }
 
@@ -49,7 +48,7 @@ resource "aws_security_group" "bastion" {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -69,14 +68,13 @@ resource "aws_security_group" "bastion" {
     to_port   = 5432
     protocol  = "tcp"
     cidr_blocks = [
-      aws_subnet.private_a.cidr_blocks,
-      aws_subnet.private_b.cidr_blocks,
-
+      aws_subnet.private_a.cidr_block,
+      aws_subnet.private_b.cidr_block,
     ]
-
-    tags = local.common_tags
-
   }
-
+  tags = merge(
+    local.common_tags,
+    tomap({ "Name" : "${local.prefix}-bastion" })
+  )
 
 }

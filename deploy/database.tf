@@ -7,12 +7,12 @@ resource "aws_db_subnet_group" "main" {
 
   tags = merge(
     local.common_tags,
-    map("Name", "${local.prefix}-main")
+    tomap({ "Name" : "${local.prefix}-main" })
   )
 }
 
 resource "aws_security_group" "rds" {
-  description = "Allow access to the RDS database instance."
+  description = "Allow access to the RDS database instance"
   name        = "${local.prefix}-rds-inbound-access"
   vpc_id      = aws_vpc.main.id
 
@@ -20,10 +20,6 @@ resource "aws_security_group" "rds" {
     protocol  = "tcp"
     from_port = 5432
     to_port   = 5432
-
-    security_groups = [
-      aws_security_group.bastion.id
-    ]
   }
 
   tags = local.common_tags
@@ -35,18 +31,20 @@ resource "aws_db_instance" "main" {
   allocated_storage       = 20
   storage_type            = "gp2"
   engine                  = "postgres"
-  engine_version          = "11.15"
+  engine_version          = "11.4"
   instance_class          = "db.t2.micro"
-  db_subnet_group_name    = aws_db_subnet_group.main.name
   password                = var.db_password
-  username                = var.db_username
+  username                = var.db_user_name
   backup_retention_period = 0
-  multi_az                = false
-  skip_final_snapshot     = true
-  vpc_security_group_ids  = [aws_security_group.rds.id]
+
+  multi_az               = false
+  skip_final_snapshot    = true
+  vpc_security_group_ids = [aws_security_group.rds.id]
 
   tags = merge(
     local.common_tags,
-    map("Name", "${local.prefix}-main")
+    tomap({ "Name" : "${local.prefix}-main" })
   )
+
 }
+
