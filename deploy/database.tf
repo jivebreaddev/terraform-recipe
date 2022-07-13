@@ -7,7 +7,7 @@ resource "aws_db_subnet_group" "main" {
 
   tags = merge(
     local.common_tags,
-    map("Name", "${local.prefix}-main")
+    tomap({ "Name" : "${local.prefix}-main" })
   )
 }
 
@@ -33,7 +33,6 @@ resource "aws_db_instance" "main" {
   engine                  = "postgres"
   engine_version          = "11.4"
   instance_class          = "db.t2.micro"
-  aws_db_subnet_group     = aws_db_subnet_group.main.name
   password                = var.db_password
   username                = var.db_user_name
   backup_retention_period = 0
@@ -44,7 +43,7 @@ resource "aws_db_instance" "main" {
 
   tags = merge(
     local.common_tags,
-    map("Name", "${local.prefix}-main")
+    tomap({ "Name" : "${local.prefix}-main" })
   )
 
 }
