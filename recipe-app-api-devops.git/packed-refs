@@ -1,7 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-aafdda5997615d1631c8642ffb9dc4ad88a18de6 refs/heads/feature/ecs-cluster
-8108a5b87ab13a86937db815bc68721cef7000c0 refs/heads/feature/load-balancer
-e9ef186277c1ac344cd7ce2094aff7f85a593d04 refs/heads/feature/prod-setup
-5bd71c6a7239c709b35f97f1e430c6c5a1539610 refs/heads/feature/s3-backend
-bf2231bf0eed4bafb267e0dcb2e6a75b18348eb9 refs/heads/master
-d05d485bd78e9193b1c2b3f62391326fed14a08e refs/heads/production
